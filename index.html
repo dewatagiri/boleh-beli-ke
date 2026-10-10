@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Boleh Beli Ke?</title>
+<style>
+:root{
+  color-scheme:light;
+  --bg:#ffffff; --ink:#111827; --muted:#566070; --line:#e6eaf1; --soft:#f4f6fb;
+  --green:#16794a; --green-bg:#e6f6ed; --green-l:#7fd0a3;
+  --amber:#9a5a05; --amber-bg:#fff3dc; --amber-l:#f3c46a;
+  --red:#b42323; --red-bg:#fdeaea; --red-l:#ec8f8f;
+  --brand:#0f3d91; --brand-bg:#eaf0fc;
+  --shadow:0 2px 10px rgba(15,35,80,.07);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*,*::before,*::after{box-sizing:inherit;}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:18px;line-height:1.45;-webkit-text-size-adjust:100%;}
+.wrap{max-width:520px;margin:0 auto;padding:10px 18px 44px;}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 12px;}
+.brand{font-weight:800;color:var(--brand);font-size:21px;letter-spacing:-.3px;display:flex;align-items:center;gap:8px;}
+.brand .mk{width:32px;height:32px;border-radius:10px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;box-shadow:var(--shadow);}
+.seg button{border:0;background:#fff;padding:9px 14px;font-size:15px;font-weight:800;color:var(--muted);}
+.seg button.on{background:var(--brand);color:#fff;}
+.demo{background:var(--amber-bg);color:var(--amber);border-radius:14px;padding:12px 14px;margin:0 0 14px;font-size:15px;font-weight:700;}
+.demo button{display:block;margin-top:8px;border:0;background:var(--amber);color:#fff;border-radius:10px;padding:10px 14px;font-size:15px;font-weight:800;}
+h1{font-size:32px;line-height:1.12;margin:6px 0 8px;letter-spacing:-.6px;}
+h2{font-size:25px;line-height:1.2;margin:8px 0 10px;letter-spacing:-.3px;}
+p{margin:0 0 12px;}
+.lead{font-size:19px;color:var(--muted);}
+.hero{text-align:center;padding:14px 0 6px;}
+.hero .logo{width:76px;height:76px;margin:0 auto 10px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;box-shadow:0 8px 24px rgba(15,61,145,.25);}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 6px;}
+.how div{background:var(--soft);border-radius:16px;padding:14px 8px;text-align:center;font-size:14px;font-weight:700;line-height:1.25;}
+.how div b{display:block;font-size:30px;margin-bottom:4px;}
+.card{border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px;background:#fff;box-shadow:var(--shadow);}
+.soft{background:var(--soft);box-shadow:none;}
+.hint{font-size:15px;color:var(--muted);margin-top:6px;}
+.lb{display:block;font-size:17px;font-weight:800;margin:16px 0 6px;}
+.money{display:flex;align-items:center;border:2px solid #c5ccd8;border-radius:14px;background:#fff;}
+.money:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px #c4d5f6;}
+.money span{padding:0 4px 0 14px;font-weight:800;color:var(--muted);font-size:20px;}
+.money input{border:0;outline:0;flex:1;min-width:0;font:inherit;font-size:25px;font-weight:800;padding:13px 12px 13px 4px;background:transparent;color:var(--ink);}
+.txt{width:100%;font:inherit;font-size:18px;padding:13px;border:2px solid #c5ccd8;border-radius:14px;background:#fff;color:var(--ink);}
+.txt:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px #c4d5f6;}
+textarea.txt{min-height:80px;font-size:16px;}
+button.primary{display:block;width:100%;margin-top:14px;padding:17px;font-size:19px;font-weight:800;border:0;border-radius:16px;background:var(--brand);color:#fff;box-shadow:0 6px 16px rgba(15,61,145,.25);}
+button.primary:disabled{opacity:.45;}
+button.second{display:block;width:100%;margin-top:10px;padding:15px;font-size:18px;font-weight:800;border:2px solid var(--brand);border-radius:16px;background:#fff;color:var(--brand);}
+button.link{display:block;margin:12px auto 0;border:0;background:transparent;color:var(--brand);font-size:17px;font-weight:700;text-decoration:underline;padding:8px;}
+button.back{border:0;background:transparent;color:var(--brand);font-size:17px;font-weight:800;padding:8px 0;}
+button.del{border:0;background:transparent;color:var(--red);font-weight:700;font-size:15px;padding:8px 0 0;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chips button{border:2px solid #c5ccd8;background:#fff;border-radius:999px;padding:11px 16px;font-size:17px;font-weight:700;color:var(--ink);}
+.chips button.on{border-color:var(--brand);background:var(--brand-bg);color:var(--brand);}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tile{border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px 4px 10px;text-align:center;font-size:13px;font-weight:700;line-height:1.2;color:var(--ink);}
+.tile .em{display:block;font-size:30px;margin-bottom:4px;}
+.tile.on{border-color:var(--brand);background:var(--brand-bg);color:var(--brand);box-shadow:0 0 0 3px #c4d5f6;}
+.steps{display:flex;gap:6px;margin:6px 0 2px;}
+.steps i{flex:1;height:7px;border-radius:99px;background:var(--line);}
+.steps i.on{background:var(--brand);}
+.nav{display:flex;gap:10px;margin-top:14px;align-items:stretch;}
+.nav button.primary{flex:1;width:auto;margin-top:0;}
+button.arrow{flex:none;width:68px;padding:12px 0;font-size:28px;line-height:1;font-weight:800;border:2px solid var(--brand);border-radius:16px;background:#fff;color:var(--brand);}
+button.arrow:active{background:var(--brand-bg);}
+button.arrow:disabled{opacity:.28;}
+.gnav{display:flex;justify-content:space-between;margin:0 0 12px;}
+.gnav button.arrow{width:70px;padding:7px 0;font-size:26px;}
+.err{color:var(--red);font-weight:800;font-size:16px;margin-top:8px;}
+.verdict{border-radius:20px;padding:18px 16px 14px;margin:0 0 14px;}
+.verdict.green{background:linear-gradient(180deg,var(--green-bg),#f6fcf9);}
+.verdict.amber{background:linear-gradient(180deg,var(--amber-bg),#fffaf0);}
+.verdict.red{background:linear-gradient(180deg,var(--red-bg),#fff6f6);}
+.verdict .vt{font-size:27px;font-weight:800;line-height:1.15;}
+.verdict.green .vt{color:var(--green);} .verdict.amber .vt{color:var(--amber);} .verdict.red .vt{color:var(--red);}
+.verdict .vs{font-size:17px;margin-top:8px;color:var(--ink);}
+.gauge{width:100%;max-width:300px;margin:6px auto 0;display:block;}
+.gl{display:flex;justify-content:center;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;font-weight:700;color:var(--muted);margin-top:2px;}
+.gl i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px;}
+.bigl{font-size:16px;color:var(--muted);font-weight:700;}
+.bign{font-size:42px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;}
+.flex{display:flex;align-items:center;gap:14px;}
+.donut{width:112px;height:112px;flex:none;}
+.legend{flex:1;min-width:0;}
+.lg{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:14.5px;}
+.lg i{width:12px;height:12px;border-radius:4px;flex:none;}
+.lg span{flex:1;min-width:0;}
+.lg b{white-space:nowrap;}
+.lg small{color:var(--muted);font-weight:600;margin-left:4px;}
+.stack{display:flex;height:18px;border-radius:99px;overflow:hidden;background:var(--line);margin:10px 0 8px;}
+.stack span{display:block;height:100%;}
+.sec{font-size:19px;font-weight:800;margin:0 0 8px;}
+.row2{display:flex;justify-content:space-between;align-items:baseline;gap:10px;}
+.item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+.item:last-child{border-bottom:0;}
+.badge{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:23px;flex:none;}
+.item .mid{flex:1;min-width:0;}
+.item .r1{display:flex;justify-content:space-between;gap:10px;font-weight:800;font-size:18px;}
+.item small{display:block;color:var(--muted);font-size:14.5px;margin-top:2px;}
+.grp{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:14px 0 2px;font-weight:800;font-size:17px;}
+.grp:first-child{margin-top:0;}
+.grp span:last-child,.item .r1 span:last-child,.row2 b{white-space:nowrap;}
+.empty{color:var(--muted);padding:6px 0;}
+.emptybox{text-align:center;padding:10px 0 4px;}
+.emptybox .big{font-size:46px;}
+ul.signs{margin:8px 0 0;padding-left:22px;}
+ul.signs li{margin:6px 0;}
+.hidden{display:none;}
+footer{margin-top:22px;font-size:13px;color:var(--muted);text-align:center;}
+a{color:var(--brand);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="mk">💳</span>Boleh Beli Ke?</div>
+    <div class="seg" role="group" aria-label="Language">
+      <button type="button" id="lEN">EN</button>
+      <button type="button" id="lMS">BM</button>
+    </div>
+  </div>
+  <div id="demoBanner" class="demo hidden"></div>
+  <main id="app"></main>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Instalments as % of take-home income.
+  // PLACEHOLDERS – to be validated with AKPK before any public release.
+  var AMBER_PCT=20, RED_PCT=35, KEY="ansuran:v2";
+
+  var CATS=[
+    {id:"phone",e:"📱",c:"#0f3d91"},
+    {id:"fashion",e:"👟",c:"#d64f7a"},
+    {id:"food",e:"🛒",c:"#2f9e6b"},
+    {id:"travel",e:"🚗",c:"#d9822b"},
+    {id:"home",e:"🛋️",c:"#7a4fd6"},
+    {id:"stream",e:"🎬",c:"#2aa3b8"},
+    {id:"learn",e:"🎓",c:"#8a6d3b"},
+    {id:"health",e:"💊",c:"#c9467a"},
+    {id:"other",e:"📦",c:"#6b7a99"}
+  ];
+  function catOf(id){for(var i=0;i<CATS.length;i++){if(CATS[i].id===id)return CATS[i];}return CATS[CATS.length-1];}
+  function tint(hex){return hex+"22";}
+
+  var I18N={
+    en:{
+      welcomeLead:"Check what you can safely afford before you use Pay Later (Atome, SPayLater, Grab and others).",
+      how1:"Tell us your income", how2:"Add your instalments", how3:"Check before you buy",
+      continueMine:"Continue to my plan", start:"Start – takes 1 minute", seeExample:"See an example first",
+      privacyTitle:"Private", privacyBody:"No account. No bank login. Your numbers stay on this phone only.",
+      stepOf:"Step {n} of 3",
+      q1:"How much money do you take home each month?",
+      h1:"After EPF and tax. Use your salary slip or bank. If it changes, use a normal month.",
+      q2:"What must you pay every month?",
+      h2:"Fill in what applies to you. Skip the rest.",
+      rent:"Rent or house loan", food:"Food and groceries", transport:"Transport and petrol", bills:"Bills and phone", other:"Family support or other must-pay",
+      total:"Total must-pay",
+      q3:"Do you pay any instalments every month?",
+      h3:"For example a phone, shoes, groceries or rides on Pay Later (Atome, SPayLater, Grab), or any other monthly instalment.",
+      yesAdd:"Yes, add them", noNone:"No, none", addAnother:"Add another", done:"Done",
+      next:"Next", back:"← Back", backAria:"Previous page", fwdAria:"Next page", cancel:"Cancel", homeBtn:"← Home",
+      needIncome:"Please type your monthly income.",
+      leftForYou:"Left for you this month",
+      shortBy:"You are short by {x} this month.",
+      okT:"😊 You're okay", okS:"Your instalments are {p}% of your income. That is in the safe zone (under {a}%).",
+      carT:"😐 Be careful", carS:"Your instalments are {p}% of your income. Try not to add new ones until one finishes.",
+      tooT:"😟 Too much", tooS:"Your instalments are {p}% of your income, or leave you with nothing spare. Do not add new ones. Help is available below.",
+      gSafe:"Safe (under {a}%)", gCare:"Careful ({a}–{r}%)", gToo:"Too much (over {r}%)",
+      whereMoney:"Where your income goes",
+      mustPay:"Must-pay things", instalments:"Instalments", leftLbl:"Left for you", ofIncome:"of income",
+      yourInst:"Your instalments", perMonth:"per month", nPay:"{n} payments",
+      seeByProduct:"See by product or service", addInst:"+ Add an instalment",
+      noInst:"No instalments added yet.",
+      nextPay:"Next payments",
+      canBuy:"🛒 Can I buy something?",
+      changeMoney:"Change my income and bills", needHelp:"Struggling to pay? Get help", saveBack:"Back", saveLink:"📲 Save to my phone", saveTitle:"Save to your phone", saveIntro:"Keep Boleh Beli Ke? one tap away, like a normal app. It takes 30 seconds.",
+      copyBtn:"Copy link", copied:"✅ Link copied. You can paste it in WhatsApp or Notes.", copyFail:"Press and hold the link above, then tap Copy.",
+      linkLbl:"Boleh Beli Ke? link",
+      iosTitle:"iPhone (Safari)", iosSteps:["Open the link in Safari. If you are inside LinkedIn or WhatsApp, tap the ••• or compass icon and choose Open in Safari.","Tap the Share button (square with an arrow pointing up).","Scroll down and tap Add to Home Screen.","Tap Add. The Boleh Beli Ke? icon is now on your home screen."],
+      andTitle:"Android (Chrome)", andSteps:["Open the link in Chrome. If you are inside LinkedIn or WhatsApp, tap the ⋮ menu and choose Open in browser.","Tap the ⋮ menu at the top right of Chrome.","Tap Add to Home screen (or Install app).","Tap Add. The Boleh Beli Ke? icon is now on your home screen."],
+      saveNote:"Your numbers stay on this phone and in this browser. If you clear browser data, they are gone.",
+      remove:"Remove", tapAgain:"Tap again to remove",
+      monthsLeft:"{n} months left", dueDay:"pay on day {d}",
+      inDays:"in {n} days", todayW:"today", tomorrowW:"tomorrow",
+      plansTitle:"My instalments", plansTotal:"Total every month", byProduct:"By product or service",
+      plansEmpty:"Add what you pay for every month, like your phone, shoes or groceries.",
+      addTitle:"Add an instalment", whatFor:"What is it for?", pickCat:"Please pick what it is for.",
+      nameOpt:"Name (optional)", namePh:"e.g. iPhone, school shoes",
+      howMuch:"How much do you pay each month?", paidThrough:"Paid through (optional)", other_p:"Other",
+      howLong:"How many months are left?", howLongH:"Optional", whichDay:"Which day of the month do you pay?", whichDayH:"Optional. Example: 15",
+      save:"Save", errMonthly:"Please type the monthly amount.", errDay:"Day must be between 1 and 31.",
+      pasteLink:"Got a reminder message? Paste it instead", pasteBtn:"Fill it in for me",
+      pasteFail:"Could not read it. Please type the details above.", pasteOk:"Done. Please check the details above, then tap Save.",
+      buyTitle:"Can I buy this?", price:"What is the price?", payOver:"Pay over how many months?",
+      extraLink:"Does it charge extra fee or interest?", extraLbl:"Extra fee or interest in total (optional)",
+      youPay:"You would pay", eachMonth:"each month for", months:"months",
+      stillLeft:"You would still have {x} left each month.",
+      vOkT:"✅ You can manage this", vCarT:"⚠️ Be careful", vTooT:"⛔ Not now", vShortT:"⛔ You cannot afford this",
+      vCarS:"Your instalments would be {p}% of your income. Safe is under {a}%. If you can, wait until one of yours ends.",
+      vTooS:"Your instalments would be {p}% of your income. That is too much. If you still want it, wait 24 hours and check again.",
+      vShortS:"You would be short by {x} each month.",
+      vOkS:"Your instalments would be {p}% of your income. Ask yourself: do I need it, or just want it today?",
+      youDecide:"This is guidance only. You decide.",
+      buyIt:"I will buy it – add to my instalments", enterPrice:"Type a price to check.",
+      helpTitle:"Struggling to pay?",
+      helpBody:"You are not alone. AKPK gives free help with debt and credit. Talking to them early is cheaper than waiting until payments are missed.",
+      helpVerify:"Please check the contact details on the official AKPK website.",
+      signsTitle:"Signs you should talk to someone",
+      signs:["You use one instalment to pay another","You skip food or bills to make payments","Your instalments take more than a third of your income","You are hiding them from family"],
+      exampleBanner:"EXAMPLE ONLY – this is not your money.", startOwn:"Start with my own numbers",
+      disclaimer:"Guidance only, not financial advice. Safe limits are placeholders being checked.",
+      c_phone:"Phone and gadgets", c_fashion:"Fashion and beauty", c_food:"Food and groceries", c_travel:"Rides and travel",
+      c_home:"Home and appliances", c_stream:"Subscriptions and apps", c_learn:"Courses and school", c_health:"Health", c_other:"Other"
+    },
+    ms:{
+      welcomeLead:"Semak berapa anda mampu sebelum guna Bayar Kemudian (Atome, SPayLater, Grab dan lain-lain).",
+      how1:"Beritahu pendapatan anda", how2:"Tambah ansuran anda", how3:"Semak sebelum beli",
+      continueMine:"Teruskan ke pelan saya", start:"Mula – 1 minit sahaja", seeExample:"Lihat contoh dahulu",
+      privacyTitle:"Peribadi", privacyBody:"Tiada akaun. Tiada log masuk bank. Nombor anda kekal dalam telefon ini sahaja.",
+      stepOf:"Langkah {n} daripada 3",
+      q1:"Berapa gaji bersih yang anda bawa pulang setiap bulan?",
+      h1:"Selepas KWSP dan cukai. Rujuk slip gaji atau bank. Jika berubah-ubah, guna bulan biasa.",
+      q2:"Apa yang wajib anda bayar setiap bulan?",
+      h2:"Isi yang berkenaan sahaja. Langkau yang lain.",
+      rent:"Sewa atau pinjaman rumah", food:"Makanan dan barang dapur", transport:"Pengangkutan dan minyak", bills:"Bil dan telefon", other:"Sara keluarga atau wajib lain",
+      total:"Jumlah wajib bayar",
+      q3:"Adakah anda bayar ansuran setiap bulan?",
+      h3:"Contohnya telefon, kasut, barang dapur atau tambang melalui Bayar Kemudian (Atome, SPayLater, Grab), atau ansuran bulanan lain.",
+      yesAdd:"Ya, tambah", noNone:"Tidak, tiada", addAnother:"Tambah lagi", done:"Selesai",
+      next:"Seterusnya", back:"← Kembali", backAria:"Halaman sebelumnya", fwdAria:"Halaman seterusnya", cancel:"Batal", homeBtn:"← Utama",
+      needIncome:"Sila taip pendapatan bulanan anda.",
+      leftForYou:"Baki untuk anda bulan ini",
+      shortBy:"Anda kurang {x} bulan ini.",
+      okT:"😊 Anda okay", okS:"Ansuran anda ialah {p}% daripada pendapatan. Ini di zon selamat (bawah {a}%).",
+      carT:"😐 Berhati-hati", carS:"Ansuran anda ialah {p}% daripada pendapatan. Elakkan tambah yang baharu sehingga satu tamat.",
+      tooT:"😟 Terlalu banyak", tooS:"Ansuran anda ialah {p}% daripada pendapatan, atau tiada baki. Jangan tambah yang baharu. Bantuan ada di bawah.",
+      gSafe:"Selamat (bawah {a}%)", gCare:"Hati-hati ({a}–{r}%)", gToo:"Terlalu banyak (atas {r}%)",
+      whereMoney:"Ke mana pendapatan anda pergi",
+      mustPay:"Wajib bayar", instalments:"Ansuran", leftLbl:"Baki untuk anda", ofIncome:"daripada pendapatan",
+      yourInst:"Ansuran anda", perMonth:"sebulan", nPay:"{n} bayaran",
+      seeByProduct:"Lihat mengikut produk atau perkhidmatan", addInst:"+ Tambah ansuran",
+      noInst:"Belum ada ansuran ditambah.",
+      nextPay:"Bayaran seterusnya",
+      canBuy:"🛒 Bolehkah saya beli sesuatu?",
+      changeMoney:"Ubah pendapatan dan bil saya", needHelp:"Susah nak bayar? Dapatkan bantuan", saveBack:"Kembali", saveLink:"📲 Simpan ke telefon saya", saveTitle:"Simpan ke telefon anda", saveIntro:"Jadikan Boleh Beli Ke? satu ketik sahaja, seperti app biasa. Ambil masa 30 saat.",
+      copyBtn:"Salin pautan", copied:"✅ Pautan disalin. Boleh tampal di WhatsApp atau Notes.", copyFail:"Tekan dan tahan pautan di atas, kemudian ketik Salin.",
+      linkLbl:"Pautan Boleh Beli Ke?",
+      iosTitle:"iPhone (Safari)", iosSteps:["Buka pautan dalam Safari. Jika anda berada dalam LinkedIn atau WhatsApp, ketik ikon ••• atau kompas dan pilih Open in Safari.","Ketik butang Share (petak dengan anak panah ke atas).","Tatal ke bawah dan ketik Add to Home Screen.","Ketik Add. Ikon Boleh Beli Ke? kini ada di skrin utama anda."],
+      andTitle:"Android (Chrome)", andSteps:["Buka pautan dalam Chrome. Jika anda berada dalam LinkedIn atau WhatsApp, ketik menu ⋮ dan pilih Buka dalam pelayar.","Ketik menu ⋮ di bahagian atas kanan Chrome.","Ketik Add to Home screen (atau Install app).","Ketik Add. Ikon Boleh Beli Ke? kini ada di skrin utama anda."],
+      saveNote:"Nombor anda kekal dalam telefon dan pelayar ini sahaja. Jika anda padam data pelayar, nombor itu hilang.",
+      remove:"Buang", tapAgain:"Tekan lagi untuk buang",
+      monthsLeft:"{n} bulan lagi", dueDay:"bayar pada hari {d}",
+      inDays:"dalam {n} hari", todayW:"hari ini", tomorrowW:"esok",
+      plansTitle:"Ansuran saya", plansTotal:"Jumlah setiap bulan", byProduct:"Mengikut produk atau perkhidmatan",
+      plansEmpty:"Tambah apa yang anda bayar setiap bulan, seperti telefon, kasut atau barang dapur.",
+      addTitle:"Tambah ansuran", whatFor:"Untuk apa?", pickCat:"Sila pilih untuk apa ansuran ini.",
+      nameOpt:"Nama (pilihan)", namePh:"cth. iPhone, kasut sekolah",
+      howMuch:"Berapa anda bayar setiap bulan?", paidThrough:"Dibayar melalui (pilihan)", other_p:"Lain-lain",
+      howLong:"Berapa bulan lagi?", howLongH:"Pilihan", whichDay:"Hari ke berapa setiap bulan anda bayar?", whichDayH:"Pilihan. Contoh: 15",
+      save:"Simpan", errMonthly:"Sila taip jumlah bulanan.", errDay:"Hari mesti antara 1 hingga 31.",
+      pasteLink:"Ada mesej peringatan? Tampal di sini", pasteBtn:"Isikan untuk saya",
+      pasteFail:"Tidak dapat baca. Sila taip butiran di atas.", pasteOk:"Siap. Sila semak butiran di atas, kemudian tekan Simpan.",
+      buyTitle:"Bolehkah saya beli ini?", price:"Berapa harganya?", payOver:"Bayar dalam berapa bulan?",
+      extraLink:"Ada yuran tambahan atau faedah?", extraLbl:"Jumlah yuran atau faedah tambahan (pilihan)",
+      youPay:"Anda akan bayar", eachMonth:"setiap bulan selama", months:"bulan",
+      stillLeft:"Anda masih ada baki {x} setiap bulan.",
+      vOkT:"✅ Anda mampu", vCarT:"⚠️ Berhati-hati", vTooT:"⛔ Jangan sekarang", vShortT:"⛔ Anda tidak mampu",
+      vCarS:"Ansuran anda akan jadi {p}% daripada pendapatan. Selamat ialah bawah {a}%. Jika boleh, tunggu sehingga satu ansuran tamat.",
+      vTooS:"Ansuran anda akan jadi {p}% daripada pendapatan. Itu terlalu banyak. Jika masih mahu, tunggu 24 jam dan semak semula.",
+      vShortS:"Anda akan kurang {x} setiap bulan.",
+      vOkS:"Ansuran anda akan jadi {p}% daripada pendapatan. Tanya diri: perlu, atau sekadar mahu hari ini?",
+      youDecide:"Ini panduan sahaja. Anda yang tentukan.",
+      buyIt:"Saya akan beli – tambah ke ansuran saya", enterPrice:"Taip harga untuk semak.",
+      helpTitle:"Susah nak bayar?",
+      helpBody:"Anda tidak keseorangan. AKPK memberi bantuan percuma untuk hutang dan kredit. Berbincang awal lebih murah daripada menunggu sehingga bayaran terlepas.",
+      helpVerify:"Sila semak maklumat perhubungan di laman web rasmi AKPK.",
+      signsTitle:"Tanda anda patut bercakap dengan seseorang",
+      signs:["Anda guna satu ansuran untuk bayar yang lain","Anda kurangkan makan atau bil untuk membuat bayaran","Ansuran melebihi satu pertiga pendapatan","Anda sorokkan daripada keluarga"],
+      exampleBanner:"CONTOH SAHAJA – ini bukan wang anda.", startOwn:"Mula dengan nombor saya",
+      disclaimer:"Panduan sahaja, bukan nasihat kewangan. Had selamat ialah anggaran yang sedang disemak.",
+      c_phone:"Telefon dan gajet", c_fashion:"Fesyen dan kecantikan", c_food:"Makanan dan barang dapur", c_travel:"Tambang dan perjalanan",
+      c_home:"Rumah dan perabot", c_stream:"Langganan dan aplikasi", c_learn:"Kursus dan sekolah", c_health:"Kesihatan", c_other:"Lain-lain"
+    }
+  };
+
+  var PROVIDERS=["SPayLater","Atome","Grab","Boost","ShopBack"];
+  var PARSE_NAMES=[["spaylater","SPayLater"],["atome","Atome"],["grab","Grab"],["boost","Boost"],["payflex","Boost"],["shopback","ShopBack"]];
+
+  var DEMO_DATA={setupDone:true,income:3000,
+    ess:{rent:800,food:500,transport:200,bills:100,other:0},
+    items:[
+      {cat:"phone",provider:"SPayLater",item:"Phone",monthly:230,monthsLeft:8,dueDay:5},
+      {cat:"fashion",provider:"Atome",item:"Shoes",monthly:120,monthsLeft:2,dueDay:15},
+      {cat:"food",provider:"Grab",item:"Groceries",monthly:140,monthsLeft:3,dueDay:25},
+      {cat:"travel",provider:"Grab",item:"Rides",monthly:80,monthsLeft:3,dueDay:25},
+      {cat:"stream",provider:"Boost",item:"Streaming",monthly:40,monthsLeft:6,dueDay:10}]};
+
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+  function num(v){var n=parseFloat(v);return isFinite(n)&&n>0?n:0;}
+  function fmt(n){var neg=n<0,a=Math.abs(n);return (neg?"-":"")+"RM "+a.toLocaleString("en-MY",{minimumFractionDigits:0,maximumFractionDigits:2});}
+
+  function blank(){return {lang:"ms",langSet:true,setupDone:false,income:0,ess:{rent:0,food:0,transport:0,bills:0,other:0},items:[]};}
+  function loadState(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+  var REAL=loadState()||blank();
+  if(!REAL.ess)REAL.ess={rent:0,food:0,transport:0,bills:0,other:0};
+  if(!REAL.items)REAL.items=[];
+  if(!REAL.lang||!REAL.langSet){REAL.lang="ms";REAL.langSet=true;}
+  REAL.items.forEach(function(i){if(!i.cat)i.cat="other";});
+  var S=REAL, view="welcome", returnTo="home";
+  function inDemo(){return S!==REAL;}
+  function save(){if(inDemo())return;try{localStorage.setItem(KEY,JSON.stringify(REAL));}catch(e){}}
+
+  function T(k,v){
+    var L=I18N[REAL.lang]||I18N.en, s=L[k]!==undefined?L[k]:I18N.en[k];
+    if(v&&typeof s==="string"){Object.keys(v).forEach(function(x){s=s.split("{"+x+"}").join(v[x]);});}
+    return s;
+  }
+  function catName(id){return T("c_"+catOf(id).id);}
+
+  // ---- Maths
+  function essTotal(s){var e=s.ess||{};return num(e.rent)+num(e.food)+num(e.transport)+num(e.bills)+num(e.other);}
+  function calc(extra){
+    var load=0;S.items.forEach(function(i){load+=num(i.monthly);});load+=extra||0;
+    var income=num(S.income), ess=essTotal(S);
+    var pct=income>0?(load/income)*100:(load>0?999:0);
+    var safe=income-ess-load;
+    var band=(safe<0||pct>=RED_PCT)?"red":(pct>=AMBER_PCT?"amber":"green");
+    return {load:load,income:income,ess:ess,pct:pct,safe:safe,band:band};
+  }
+  function pctTxt(p){return p>=999?"100+":String(Math.round(p*10)/10);}
+  function byCat(){
+    var m={},list=[];
+    S.items.forEach(function(i){var k=catOf(i.cat).id;if(!m[k]){m[k]={id:k,total:0,items:[]};list.push(m[k]);}m[k].total+=num(i.monthly);m[k].items.push(i);});
+    list.sort(function(a,b){return b.total-a.total;});
+    return list;
+  }
+
+  // ---- Charts
+  function gauge(pct){
+    var cx=100,cy=100,r=78,sw=18;
+    function pt(p,rad){var a=Math.PI*(1-p/50);return [cx+rad*Math.cos(a),cy-rad*Math.sin(a)];}
+    function arc(p1,p2,col){var a=pt(p1,r),b=pt(p2,r);
+      return '<path d="M'+a[0].toFixed(2)+' '+a[1].toFixed(2)+' A'+r+' '+r+' 0 0 1 '+b[0].toFixed(2)+' '+b[1].toFixed(2)+'" fill="none" stroke="'+col+'" stroke-width="'+sw+'"/>';}
+    var p=Math.min(Math.max(pct,0),50), tip=pt(p,r-8);
+    var svg='<svg class="gauge" viewBox="0 0 200 132" role="img" aria-label="'+esc(pctTxt(pct))+'%">'+
+      arc(0,AMBER_PCT,"#7fd0a3")+arc(AMBER_PCT,RED_PCT,"#f3c46a")+arc(RED_PCT,50,"#ec8f8f")+
+      '<line x1="'+cx+'" y1="'+cy+'" x2="'+tip[0].toFixed(2)+'" y2="'+tip[1].toFixed(2)+'" stroke="#111827" stroke-width="5" stroke-linecap="round"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="#111827"/>'+
+      '<text x="18" y="119" font-size="11" fill="#566070" font-weight="700">0%</text>'+
+      '<text x="182" y="119" font-size="11" fill="#566070" font-weight="700" text-anchor="end">50%+</text>'+
+      '<text x="100" y="128" font-size="19" fill="#111827" font-weight="800" text-anchor="middle">'+esc(pctTxt(pct))+'%</text></svg>';
+    var lg='<div class="gl"><span><i style="background:#7fd0a3"></i>'+esc(T("gSafe",{a:AMBER_PCT}))+'</span><span><i style="background:#f3c46a"></i>'+esc(T("gCare",{a:AMBER_PCT,r:RED_PCT}))+'</span><span><i style="background:#ec8f8f"></i>'+esc(T("gToo",{r:RED_PCT}))+'</span></div>';
+    return svg+lg;
+  }
+  function donut(segs,cTop,cBot,botColor){
+    var total=0;segs.forEach(function(s){total+=Math.max(s.v,0);});
+    var R=15.91549,off=25,h='<svg class="donut" viewBox="0 0 42 42" role="img"><circle cx="21" cy="21" r="'+R+'" fill="none" stroke="#e6eaf1" stroke-width="6"/>';
+    if(total>0){segs.forEach(function(s){
+      if(s.v<=0)return;var len=s.v/total*100;
+      h+='<circle cx="21" cy="21" r="'+R+'" fill="none" stroke="'+s.c+'" stroke-width="6" stroke-dasharray="'+len.toFixed(3)+' '+(100-len).toFixed(3)+'" stroke-dashoffset="'+off.toFixed(3)+'"/>';
+      off-=len;});}
+    h+='<text x="21" y="19.4" text-anchor="middle" font-size="3.4" fill="#566070" font-weight="700">'+esc(cTop)+'</text>'+
+       '<text x="21" y="25" text-anchor="middle" font-size="4.3" font-weight="800" fill="'+(botColor||"#111827")+'">'+esc(cBot)+'</text></svg>';
+    return h;
+  }
+  function stackBar(groups){
+    var total=0;groups.forEach(function(g){total+=g.total;});
+    if(total<=0)return '';
+    return '<div class="stack">'+groups.map(function(g){return '<span style="width:'+(g.total/total*100).toFixed(2)+'%;background:'+catOf(g.id).c+'"></span>';}).join("")+'</div>';
+  }
+
+  function nextDueDays(day){
+    var now=new Date(),y=now.getFullYear(),m=now.getMonth(),d=now.getDate();
+    function dim(yy,mm){return new Date(yy,mm+1,0).getDate();}
+    var t=Math.min(day,dim(y,m));
+    if(t<d){m+=1;if(m>11){m=0;y+=1;}t=Math.min(day,dim(y,m));}
+    var a=new Date(now.getFullYear(),now.getMonth(),now.getDate()),b=new Date(y,m,t);
+    return Math.round((b-a)/86400000);
+  }
+  function armConfirm(btn,action){
+    if(btn.dataset.armed==="1"){clearTimeout(btn._t);btn.dataset.armed="";btn.textContent=btn.dataset.orig;action();return;}
+    btn.dataset.orig=btn.textContent;btn.dataset.armed="1";btn.textContent=T("tapAgain");
+    btn._t=setTimeout(function(){btn.dataset.armed="";btn.textContent=btn.dataset.orig;},4000);
+  }
+
+  // ---- UI helpers
+  function moneyField(id,label,val,ph,hint){
+    return (label?'<label class="lb" for="'+id+'">'+esc(label)+'</label>':'')+'<div class="money"><span>RM</span><input id="'+id+'" type="number" inputmode="decimal" min="0" placeholder="'+ph+'" value="'+(val?val:"")+'"></div>'+(hint?'<div class="hint">'+esc(hint)+'</div>':'');
+  }
+  function steps(n){
+    return '<div class="steps">'+[1,2,3].map(function(i){return '<i class="'+(i<=n?"on":"")+'"></i>';}).join("")+'</div><div class="hint">'+esc(T("stepOf",{n:n}))+'</div>';
+  }
+  function planRow(i,idx,withDel){
+    var c=catOf(i.cat),m=num(i.monthly),left=parseInt(i.monthsLeft,10)||0,bits=[];
+    if(i.provider)bits.push(i.provider);
+    if(left)bits.push(T("monthsLeft",{n:left}));
+    if(i.dueDay)bits.push(T("dueDay",{d:i.dueDay}));
+    var name=i.item?esc(i.item):esc(catName(i.cat));
+    return '<div class="item"><div class="badge" style="background:'+tint(c.c)+'">'+c.e+'</div><div class="mid"><div class="r1"><span>'+name+'</span><span>'+esc(fmt(m))+'</span></div>'+
+      (bits.length?'<small>'+esc(bits.join(" · "))+'</small>':'')+
+      (withDel?'<button class="del" type="button" data-del="'+idx+'">'+esc(T("remove"))+'</button>':'')+'</div></div>';
+  }
+  function wireDeletes(root){
+    root.querySelectorAll("[data-del]").forEach(function(b){
+      b.onclick=function(){armConfirm(b,function(){S.items.splice(parseInt(b.getAttribute("data-del"),10),1);save();render();});};
+    });
+  }
+
+  var V={}, W={};
+  function navRow(withNext){
+    return withNext?'<button class="primary" id="nextBtn" type="button">'+esc(T("next"))+' &#8594;</button>':'';
+  }
+
+  // Welcome
+  V.welcome=function(){
+    return '<div class="hero"><div class="logo">💳</div><h1>Boleh Beli Ke?</h1><p class="lead">'+esc(T("welcomeLead"))+'</p></div>'+
+      '<div class="how"><div><b>💰</b>'+esc(T("how1"))+'</div><div><b>📋</b>'+esc(T("how2"))+'</div><div><b>✅</b>'+esc(T("how3"))+'</div></div>'+
+      (REAL.setupDone?'<button class="primary" id="contBtn" type="button">'+esc(T("continueMine"))+'</button>':'')+
+      '<button class="'+(REAL.setupDone?'link':'primary')+'" id="startBtn" type="button">'+esc(T("start"))+'</button>'+
+      '<button class="link" id="demoBtn" type="button">'+esc(T("seeExample"))+'</button>'+
+      '<button class="second" id="saveBtn" type="button">'+esc(T("saveLink"))+'</button>'+
+      '<div class="card soft" style="margin-top:16px"><b>🔒 '+esc(T("privacyTitle"))+'</b><div class="hint">'+esc(T("privacyBody"))+'</div></div>';
+  };
+  W.welcome=function(){if($("contBtn"))$("contBtn").onclick=function(){go("home");};$("startBtn").onclick=function(){go("w1");};$("demoBtn").onclick=startDemo;$("saveBtn").onclick=function(){saveFrom="welcome";go("save");};};
+
+  // Step 1
+  V.w1=function(){
+    return steps(1)+'<h2>'+esc(T("q1"))+'</h2>'+moneyField("income","",REAL.income,"3000",T("h1"))+
+      '<div class="err" id="err"></div>'+
+      navRow(true);
+  };
+  W.w1=function(){
+    $("income").oninput=function(){REAL.income=num(this.value);save();$("err").textContent="";};
+    $("nextBtn").onclick=function(){if(!num(REAL.income)){$("err").textContent=T("needIncome");$("income").focus();return;}go("w2");};
+  };
+
+  // Step 2
+  V.w2=function(){
+    var e=REAL.ess;
+    return steps(2)+'<h2>'+esc(T("q2"))+'</h2><div class="hint" style="margin-top:0">'+esc(T("h2"))+'</div>'+
+      moneyField("e_rent",T("rent"),e.rent,"0")+moneyField("e_food",T("food"),e.food,"0")+
+      moneyField("e_transport",T("transport"),e.transport,"0")+moneyField("e_bills",T("bills"),e.bills,"0")+
+      moneyField("e_other",T("other"),e.other,"0")+
+      '<div class="card soft" style="margin-top:18px"><div class="row2"><b>'+esc(T("total"))+'</b><b id="eTot" style="font-size:22px"></b></div></div>'+
+      navRow(true);
+  };
+  W.w2=function(){
+    function upd(){$("eTot").textContent=fmt(essTotal(REAL));}
+    ["rent","food","transport","bills","other"].forEach(function(k){
+      $("e_"+k).oninput=function(){REAL.ess[k]=num(this.value);save();upd();};
+    });
+    upd();
+    $("nextBtn").onclick=function(){go("w3");};
+  };
+
+  // Step 3
+  V.w3=function(){
+    var list=REAL.items.length?'<div class="card">'+REAL.items.map(function(i,x){return planRow(i,x,true);}).join("")+'</div>':'';
+    var btns=REAL.items.length?
+      '<button class="primary" id="doneBtn" type="button">'+esc(T("done"))+'</button><button class="second" id="addBtn" type="button">'+esc(T("addAnother"))+'</button>':
+      '<button class="primary" id="addBtn" type="button">'+esc(T("yesAdd"))+'</button><button class="second" id="doneBtn" type="button">'+esc(T("noNone"))+'</button>';
+    return steps(3)+'<h2>'+esc(T("q3"))+'</h2><p class="hint" style="margin-top:0">'+esc(T("h3"))+'</p>'+list+btns+navRow(false);
+  };
+  W.w3=function(){
+    wireDeletes($("app"));
+    $("addBtn").onclick=function(){returnTo="w3";go("add");};
+    $("doneBtn").onclick=finishSetup;
+  };
+
+  // Home
+  V.home=function(){
+    var c=calc(0),demo=inDemo(),groups=byCat();
+    var vt,vs;
+    if(c.band==="green"){vt=T("okT");vs=T("okS",{p:pctTxt(c.pct),a:AMBER_PCT});}
+    else if(c.band==="amber"){vt=T("carT");vs=T("carS",{p:pctTxt(c.pct)});}
+    else{vt=T("tooT");vs=T("tooS",{p:pctTxt(c.pct)});}
+    var h='<div class="verdict '+c.band+'"><div class="vt">'+esc(vt)+'</div><div class="vs">'+esc(vs)+'</div>'+gauge(c.pct)+'</div>';
+
+    // income split
+    var pe=c.income>0?c.ess/c.income*100:0, pl=c.income>0?c.load/c.income*100:0, ps=c.income>0?Math.max(c.safe,0)/c.income*100:0;
+    var segs=[{v:c.ess,c:"#8b97b3"},{v:c.load,c:"#d9822b"},{v:Math.max(c.safe,0),c:"#2f9e6b"}];
+    h+='<div class="card"><div class="bigl">'+esc(T("leftForYou"))+'</div>'+
+      '<div class="bign" style="color:var(--'+(c.safe<0?"red":"ink")+')">'+esc(fmt(c.safe))+'</div>'+
+      (c.safe<0?'<div class="hint" style="color:var(--red);font-weight:700">'+esc(T("shortBy",{x:fmt(-c.safe)}))+'</div>':'')+
+      '<div class="sec" style="margin-top:14px">'+esc(T("whereMoney"))+'</div><div class="flex">'+
+      donut(segs,T("leftLbl"),fmt(c.safe),c.safe<0?"#b42323":"#16794a")+
+      '<div class="legend">'+
+      '<div class="lg"><i style="background:#8b97b3"></i><span>'+esc(T("mustPay"))+'</span><b>'+esc(fmt(c.ess))+'</b></div>'+
+      '<div class="lg"><i style="background:#d9822b"></i><span>'+esc(T("instalments"))+'</span><b>'+esc(fmt(c.load))+'</b></div>'+
+      '<div class="lg"><i style="background:#2f9e6b"></i><span>'+esc(T("leftLbl"))+'</span><b>'+esc(fmt(Math.max(c.safe,0)))+'</b></div>'+
+      '</div></div></div>';
+
+    // instalments summary
+    h+='<div class="card"><div class="row2"><div class="sec" style="margin:0">'+esc(T("yourInst"))+'</div><b style="font-size:20px">'+esc(fmt(c.load))+'</b></div>';
+    if(groups.length){
+      h+=stackBar(groups)+groups.slice(0,4).map(function(g){var k=catOf(g.id);
+        return '<div class="lg"><i style="background:'+k.c+'"></i><span>'+k.e+' '+esc(catName(g.id))+'</span><b>'+esc(fmt(g.total))+'</b></div>';}).join("");
+    }else{h+='<div class="empty">'+esc(T("noInst"))+'</div>';}
+    h+='<button class="second" id="plansBtn" type="button">'+esc(groups.length?T("seeByProduct"):T("addInst"))+'</button></div>';
+
+    var up=S.items.filter(function(i){return parseInt(i.dueDay,10)>=1;}).map(function(i){return {i:i,n:nextDueDays(parseInt(i.dueDay,10))};}).sort(function(a,b){return a.n-b.n;}).slice(0,3);
+    if(up.length){
+      h+='<div class="card"><div class="sec">'+esc(T("nextPay"))+'</div>'+up.map(function(x){
+        var when=x.n===0?T("todayW"):(x.n===1?T("tomorrowW"):T("inDays",{n:x.n})),k=catOf(x.i.cat);
+        return '<div class="item"><div class="badge" style="background:'+tint(k.c)+'">'+k.e+'</div><div class="mid"><div class="r1"><span>'+esc(x.i.item||catName(x.i.cat))+'</span><span>'+esc(fmt(num(x.i.monthly)))+'</span></div><small>'+esc(when)+'</small></div></div>';
+      }).join("")+'</div>';
+    }
+    h+='<button class="primary" id="buyBtn" type="button">'+esc(T("canBuy"))+'</button>'+
+      (demo?'':'<button class="link" id="editBtn" type="button">'+esc(T("changeMoney"))+'</button>')+
+      '<button class="link" id="helpBtn" type="button">'+esc(T("needHelp"))+'</button>'+
+      '<button class="second" id="saveBtn" type="button" style="margin-top:16px">'+esc(T("saveLink"))+'</button>';
+    return h;
+  };
+  W.home=function(){
+    $("plansBtn").onclick=function(){go("plans");};
+    $("buyBtn").onclick=function(){buyDraft={price:"",n:3,fee:"",showFee:false};go("buy");};
+    if($("editBtn"))$("editBtn").onclick=function(){go("w1");};
+    $("helpBtn").onclick=function(){go("help");};
+    $("saveBtn").onclick=function(){saveFrom="home";go("save");};
+  };
+
+  // Save to phone
+  var SHARE_URL="https://claude.ai/artifact/WLJT58ircoHV3T38wsHvC9", saveFrom="home";
+  function stepList(a){return '<ol class="signs" style="padding-left:22px">'+a.map(function(s){return '<li style="margin-bottom:8px">'+esc(s)+'</li>';}).join("")+'</ol>';}
+  V.save=function(){
+    return '<button class="back" id="backTop" type="button">&#8592; '+esc(T("saveBack"))+'</button><h2>'+esc(T("saveTitle"))+'</h2>'+
+      '<p class="hint" style="margin-top:0">'+esc(T("saveIntro"))+'</p>'+
+      '<div class="card"><div class="sec">'+esc(T("linkLbl"))+'</div>'+
+      '<input class="txt" id="shareUrl" type="text" readonly value="'+esc(SHARE_URL)+'" aria-label="'+esc(T("linkLbl"))+'" style="font-size:15px">'+
+      '<button class="primary" id="copyBtn" type="button" style="margin-top:10px">'+esc(T("copyBtn"))+'</button>'+
+      '<div class="hint" id="copyMsg" aria-live="polite"></div></div>'+
+      '<div class="card"><div class="sec">🍎 '+esc(T("iosTitle"))+'</div>'+stepList(T("iosSteps"))+'</div>'+
+      '<div class="card"><div class="sec">🤖 '+esc(T("andTitle"))+'</div>'+stepList(T("andSteps"))+'</div>'+
+      '<div class="card soft"><div class="hint" style="margin:0">'+esc(T("saveNote"))+'</div></div>';
+  };
+  W.save=function(){
+    $("backTop").onclick=function(){go(saveFrom);};
+    $("copyBtn").onclick=function(){
+      var m=$("copyMsg");
+      function done(ok){m.textContent=ok?T("copied"):T("copyFail");}
+      function fallback(){try{var i=$("shareUrl");i.focus();i.select();i.setSelectionRange(0,9999);done(document.execCommand("copy"));}catch(e){done(false);}}
+      try{
+        if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(SHARE_URL).then(function(){done(true);},fallback);return;}
+      }catch(e){}
+      fallback();
+    };
+  };
+
+  // Plans by product/service
+  V.plans=function(){
+    var c=calc(0),groups=byCat();
+    var h='<button class="back" id="backTop" type="button">'+esc(T("homeBtn"))+'</button><h2>'+esc(T("plansTitle"))+'</h2>';
+    if(!groups.length){
+      h+='<div class="card emptybox"><div class="big">📋</div><p class="hint">'+esc(T("plansEmpty"))+'</p></div>'+
+        '<button class="primary" id="addBtn" type="button">'+esc(T("addInst"))+'</button>';
+      return h;
+    }
+    var segs=groups.map(function(g){return {v:g.total,c:catOf(g.id).c};});
+    h+='<div class="card"><div class="bigl">'+esc(T("plansTotal"))+'</div><div class="bign">'+esc(fmt(c.load))+'</div>'+
+      '<div class="hint">'+esc(pctTxt(c.pct))+'% '+esc(T("ofIncome"))+'</div>'+
+      '<div class="flex" style="margin-top:12px">'+donut(segs,T("perMonth"),fmt(c.load))+
+      '<div class="legend">'+groups.map(function(g){var k=catOf(g.id),p=c.load>0?Math.round(g.total/c.load*100):0;
+        return '<div class="lg"><i style="background:'+k.c+'"></i><span>'+k.e+' '+esc(catName(g.id))+'</span><b>'+p+'%</b></div>';}).join("")+'</div></div></div>';
+    h+='<button class="primary" id="addBtn" type="button" style="margin-top:0">'+esc(T("addInst"))+'</button>';
+    h+='<div class="sec" style="margin-top:18px">'+esc(T("byProduct"))+'</div><div class="card">';
+    var first=true;
+    groups.forEach(function(g){
+      var k=catOf(g.id);
+      h+='<div class="grp" style="'+(first?"margin-top:0":"")+'"><span>'+k.e+' '+esc(catName(g.id))+'</span><span>'+esc(fmt(g.total))+'</span></div>';
+      first=false;
+      S.items.forEach(function(i,x){if(catOf(i.cat).id===g.id)h+=planRow(i,x,true);});
+    });
+    h+='</div>';
+    return h;
+  };
+  W.plans=function(){
+    wireDeletes($("app"));
+    if($("backTop"))$("backTop").onclick=function(){go("home");};
+    $("addBtn").onclick=function(){addPrefill=null;returnTo="plans";go("add");};
+  };
+
+  // Add instalment
+  var addCat="",addProvider="",addPrefill=null;
+  V.add=function(){
+    var pre=addPrefill||{};addCat="";addProvider="";
+    return '<button class="back" id="cancelTop" type="button">'+esc(T("back"))+'</button><h2>'+esc(T("addTitle"))+'</h2>'+
+      '<label class="lb" style="margin-top:4px">'+esc(T("whatFor"))+'</label><div class="tiles" id="tiles">'+
+      CATS.map(function(k){return '<button type="button" class="tile" data-c="'+k.id+'"><span class="em">'+k.e+'</span>'+esc(catName(k.id))+'</button>';}).join("")+'</div>'+
+      '<label class="lb" for="aName">'+esc(T("nameOpt"))+'</label><input class="txt" id="aName" type="text" maxlength="40" placeholder="'+esc(T("namePh"))+'">'+
+      moneyField("aMonthly",T("howMuch"),pre.monthly||"","150")+
+      '<label class="lb">'+esc(T("paidThrough"))+'</label><div class="chips" id="chips">'+
+      PROVIDERS.concat(["__other"]).map(function(p){return '<button type="button" data-p="'+(p==="__other"?"":p)+'">'+esc(p==="__other"?T("other_p"):p)+'</button>';}).join("")+'</div>'+
+      '<label class="lb" for="aMonths">'+esc(T("howLong"))+' <span style="font-weight:500;color:var(--muted)">('+esc(T("howLongH"))+')</span></label><input class="txt" id="aMonths" type="number" inputmode="numeric" min="1" max="60" placeholder="6" value="'+(pre.months||"")+'">'+
+      '<label class="lb" for="aDay">'+esc(T("whichDay"))+'</label><input class="txt" id="aDay" type="number" inputmode="numeric" min="1" max="31" placeholder="15"><div class="hint">'+esc(T("whichDayH"))+'</div>'+
+      '<div class="err" id="err"></div>'+
+      '<button class="primary" id="saveBtn" type="button">'+esc(T("save"))+'</button>'+
+      '<button class="link" id="pasteLink" type="button">'+esc(T("pasteLink"))+'</button>'+
+      '<div id="pasteBox" class="hidden"><textarea class="txt" id="paste" placeholder="SPayLater: RM85.50 due 15/11"></textarea>'+
+      '<button class="second" id="pasteBtn" type="button">'+esc(T("pasteBtn"))+'</button><div class="hint" id="pasteNote"></div></div>';
+  };
+  W.add=function(){
+    addPrefill=null;
+    $("cancelTop").onclick=function(){go(returnTo);};
+    $("tiles").querySelectorAll("button").forEach(function(b){
+      b.onclick=function(){
+        $("tiles").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+        b.classList.add("on");addCat=b.getAttribute("data-c");$("err").textContent="";
+      };
+    });
+    $("chips").querySelectorAll("button").forEach(function(b){
+      b.onclick=function(){
+        $("chips").querySelectorAll("button").forEach(function(x){x.classList.remove("on");});
+        b.classList.add("on");addProvider=b.getAttribute("data-p");
+      };
+    });
+    $("pasteLink").onclick=function(){$("pasteBox").classList.toggle("hidden");};
+    $("pasteBtn").onclick=function(){
+      var r=parseText($("paste").value||"");
+      if(!r.monthly){$("pasteNote").textContent=T("pasteFail");return;}
+      $("aMonthly").value=r.monthly;
+      if(r.dueDay)$("aDay").value=r.dueDay;
+      if(r.provider){addProvider=r.provider;$("chips").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-p")===r.provider);});}
+      $("pasteNote").textContent=T("pasteOk");
+    };
+    $("saveBtn").onclick=function(){
+      var err=$("err"),m=num($("aMonthly").value),d=$("aDay").value;
+      err.textContent="";
+      if(!addCat){err.textContent=T("pickCat");return;}
+      if(!m){err.textContent=T("errMonthly");return;}
+      var dd=d===""?null:parseInt(d,10);
+      if(dd!==null&&!(dd>=1&&dd<=31)){err.textContent=T("errDay");return;}
+      S.items.push({cat:addCat,provider:addProvider,item:$("aName").value.trim(),monthly:m,monthsLeft:parseInt($("aMonths").value,10)||0,dueDay:dd});
+      save();go(returnTo);
+    };
+  };
+
+  // Buy check
+  var buyDraft={price:"",n:3,fee:"",showFee:false};
+  V.buy=function(){
+    return '<button class="back" id="backTop" type="button">'+esc(T("homeBtn"))+'</button><h2>'+esc(T("buyTitle"))+'</h2>'+
+      moneyField("bPrice",T("price"),buyDraft.price,"1200")+
+      '<label class="lb">'+esc(T("payOver"))+'</label><div class="chips" id="nChips">'+
+      [3,6,12,24].map(function(n){return '<button type="button" data-n="'+n+'" class="'+(buyDraft.n===n?"on":"")+'">'+n+'</button>';}).join("")+'</div>'+
+      '<button class="link" id="feeLink" type="button" style="margin-left:0;text-align:left">'+esc(T("extraLink"))+'</button>'+
+      '<div id="feeBox" class="'+(buyDraft.showFee?"":"hidden")+'">'+moneyField("bFee",T("extraLbl"),buyDraft.fee,"0")+'</div>'+
+      '<div id="buyOut" style="margin-top:16px"></div>';
+  };
+  W.buy=function(){
+    $("backTop").onclick=function(){go("home");};
+    $("bPrice").oninput=function(){buyDraft.price=this.value;updBuy();};
+    $("bFee").oninput=function(){buyDraft.fee=this.value;updBuy();};
+    $("feeLink").onclick=function(){buyDraft.showFee=true;$("feeBox").classList.remove("hidden");};
+    $("nChips").querySelectorAll("button").forEach(function(b){
+      b.onclick=function(){
+        buyDraft.n=parseInt(b.getAttribute("data-n"),10);
+        $("nChips").querySelectorAll("button").forEach(function(x){x.classList.toggle("on",x===b);});
+        updBuy();
+      };
+    });
+    updBuy();
+  };
+  function updBuy(){
+    var out=$("buyOut"),price=num(buyDraft.price);
+    if(!price){out.innerHTML='<div class="empty">'+esc(T("enterPrice"))+'</div>';return;}
+    var n=buyDraft.n,fee=num(buyDraft.fee),mo=(price+fee)/n,c=calc(mo),cls,vt,vs;
+    if(c.safe<0){cls="red";vt=T("vShortT");vs=T("vShortS",{x:fmt(-c.safe)});}
+    else if(c.band==="red"){cls="red";vt=T("vTooT");vs=T("vTooS",{p:pctTxt(c.pct)});}
+    else if(c.band==="amber"){cls="amber";vt=T("vCarT");vs=T("vCarS",{p:pctTxt(c.pct),a:AMBER_PCT});}
+    else{cls="green";vt=T("vOkT");vs=T("vOkS",{p:pctTxt(c.pct)});}
+    out.innerHTML=
+      '<div class="card"><div class="bigl">'+esc(T("youPay"))+'</div><div class="bign">'+esc(fmt(mo))+'</div>'+
+      '<div class="hint">'+esc(T("eachMonth"))+' '+n+' '+esc(T("months"))+(c.safe>=0?'. '+esc(T("stillLeft",{x:fmt(c.safe)})):'')+'</div></div>'+
+      '<div class="verdict '+cls+'"><div class="vt">'+esc(vt)+'</div><div class="vs">'+esc(vs)+'</div>'+gauge(c.pct)+'</div>'+
+      '<div class="hint" style="margin-bottom:6px">'+esc(T("youDecide"))+'</div>'+
+      '<button class="second" id="buyIt" type="button">'+esc(T("buyIt"))+'</button>';
+    $("buyIt").onclick=function(){
+      addPrefill={monthly:Math.round(mo*100)/100,months:n};
+      returnTo="home";go("add");
+    };
+  }
+
+  // Help
+  V.help=function(){
+    return '<button class="back" id="backTop" type="button">'+esc(T("homeBtn"))+'</button><h2>'+esc(T("helpTitle"))+'</h2>'+
+      '<div class="card"><p>'+esc(T("helpBody"))+'</p><p><a href="https://www.akpk.org.my" target="_blank" rel="noopener noreferrer">akpk.org.my</a></p><div class="hint">'+esc(T("helpVerify"))+'</div></div>'+
+      '<div class="card soft"><div class="sec">'+esc(T("signsTitle"))+'</div><ul class="signs">'+T("signs").map(function(s){return '<li>'+esc(s)+'</li>';}).join("")+'</ul></div>';
+  };
+  W.help=function(){$("backTop").onclick=function(){go(S.setupDone?"home":"welcome");};};
+
+  // Paste parser (best effort)
+  function parseText(txt){
+    var out={},m=txt.match(/RM\s?([\d,]+(?:\.\d{1,2})?)/i);
+    if(m)out.monthly=parseFloat(m[1].replace(/,/g,""));
+    var day=null,d=txt.match(/\b(\d{1,2})\s*(jan|feb|mar|apr|may|mei|jun|jul|aug|ogos|sep|oct|okt|nov|dec|dis)[a-z]*/i);
+    if(d)day=parseInt(d[1],10);
+    else{var s=txt.match(/\b(\d{1,2})[\/\-](\d{1,2})(?:[\/\-]\d{2,4})?\b/);if(s)day=parseInt(s[1],10);}
+    if(day&&day>=1&&day<=31)out.dueDay=day;
+    var low=txt.toLowerCase();
+    for(var i=0;i<PARSE_NAMES.length;i++){if(low.indexOf(PARSE_NAMES[i][0])>-1){out.provider=PARSE_NAMES[i][1];break;}}
+    return out;
+  }
+
+  // Flow
+  function finishSetup(){REAL.setupDone=true;save();go("home");}
+  function startDemo(){S=JSON.parse(JSON.stringify(DEMO_DATA));go("home");}
+  function exitDemo(){S=REAL;go(REAL.setupDone?"home":"w1");}
+  var hist=["welcome"], hi=0;
+  function go(v){
+    if(v!==hist[hi]){hist=hist.slice(0,hi+1);hist.push(v);if(hist.length>60)hist.shift();hi=hist.length-1;}
+    view=v;render();window.scrollTo(0,0);
+  }
+  function stepNav(d){var n=hi+d;if(n<0||n>=hist.length)return;hi=n;view=hist[hi];render();window.scrollTo(0,0);}
+  function navBar(){
+    return '<div class="gnav"><button class="arrow" id="gBack" type="button" aria-label="'+esc(T("backAria"))+'"'+(hi<=0?' disabled':'')+'>&#8592;</button>'+
+      '<button class="arrow" id="gFwd" type="button" aria-label="'+esc(T("fwdAria"))+'"'+(hi>=hist.length-1?' disabled':'')+'>&#8594;</button></div>';
+  }
+
+  function render(){
+    $("lEN").classList.toggle("on",REAL.lang==="en");
+    $("lMS").classList.toggle("on",REAL.lang==="ms");
+    document.documentElement.lang=REAL.lang==="ms"?"ms":"en";
+    var banner=$("demoBanner");
+    if(inDemo()){
+      banner.classList.remove("hidden");
+      banner.innerHTML=esc(T("exampleBanner"))+'<button type="button" id="exitDemo">'+esc(T("startOwn"))+'</button>';
+      $("exitDemo").onclick=exitDemo;
+    }else{banner.classList.add("hidden");banner.innerHTML="";}
+    $("app").innerHTML=navBar()+V[view]();
+    $("gBack").onclick=function(){stepNav(-1);};
+    $("gFwd").onclick=function(){stepNav(1);};
+    W[view]();
+    $("foot").textContent=T("disclaimer");
+  }
+
+  $("lEN").onclick=function(){REAL.lang="en";save();render();};
+  $("lMS").onclick=function(){REAL.lang="ms";save();render();};
+
+  render();
+})();
+</script>
+</body>
+</html>
