@@ -169,6 +169,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
 .modal{width:100%;max-width:420px;background:var(--card);color:var(--ink);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.35);}
 .modal h2{margin:0 0 8px;}
 .modal button.danger{display:block;width:100%;margin-top:14px;padding:15px;min-height:44px;font-size:1.059rem;font-weight:800;border:0;border-radius:16px;background:#b42323;color:#fff;}
+footer button.link{font-size:.9rem;margin-top:2px;}
 .hidden{display:none !important;}
 </style>
 </head>
@@ -234,6 +235,10 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       next:"Next", back:"Back", cancel:"Cancel", homeBtn:"Home",
       needIncome:"Please type your monthly income.",
       tagline:"Boleh beli ke? Check first.",
+      legalLink:"Disclaimer and privacy (PDPA)", legalTitle:"Disclaimer and privacy", discTitle:"Disclaimer", privTitle:"Privacy and PDPA",
+      legalUpdated:"Last updated: 13 October 2026",
+      disc:["BolehBeli gives general guidance only. It is not financial, credit or legal advice.","The safe, careful and too-much limits (20% and 35% of take-home pay) are estimates that are still being checked. Your own situation may differ.","Results depend on the numbers you enter. Check your own records before you decide. You decide.","BolehBeli is an independent personal project. It is not connected to any bank, Pay Later provider or agency, including AKPK, which is linked only as a source of free help."],
+      priv:["We do not collect your data. BolehBeli has no accounts, no sign-up and no bank login. The income, bills and instalments you enter are saved only in your own browser on this device. They are not sent to us or to anyone else.","BolehBeli does not use analytics, advertising or tracking cookies. The website host may keep standard server logs, such as IP address and visit time, as most websites do.","We designed BolehBeli so that we do not collect or hold your personal data, in line with the principles of Malaysia's Personal Data Protection Act 2010 (PDPA).","You are in control. Remove any instalment inside the app, or clear this site's data in your browser settings to delete everything. This cannot be undone.","The AKPK link opens another website, which has its own privacy practices.","If this changes, for example if accounts or analytics are added, we will update this page first."],
       tabHome:"Home", tabPlans:"Instalments", tabBuy:"Can I buy?", tabHelp:"Help", tabsAria:"Main sections",
       confirmTitle:"Remove this instalment?", confirmBody:"{n} – {x} a month will be removed from your plan.", removed:"Removed", errMonths:"Months must be between 1 and 60.",
       storageFail:"Could not save on this device. Your numbers will be lost when you close this page. Check that private browsing is off.",
@@ -310,6 +315,10 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       next:"Seterusnya", back:"Kembali", cancel:"Batal", homeBtn:"Utama",
       needIncome:"Sila taip pendapatan bulanan anda.",
       tagline:"Boleh beli ke? Semak dulu.",
+      legalLink:"Penafian dan privasi (PDPA)", legalTitle:"Penafian dan privasi", discTitle:"Penafian", privTitle:"Privasi dan PDPA",
+      legalUpdated:"Kemas kini terakhir: 13 Oktober 2026",
+      disc:["BolehBeli hanya memberi panduan am. Ia bukan nasihat kewangan, kredit atau undang-undang.","Had selamat, hati-hati dan terlalu banyak (20% dan 35% daripada gaji bersih) ialah anggaran yang masih disemak. Keadaan anda mungkin berbeza.","Keputusan bergantung pada nombor yang anda masukkan. Semak rekod sendiri sebelum membuat keputusan. Anda yang menentukan.","BolehBeli ialah projek peribadi yang bebas. Ia tidak bergabung dengan mana-mana bank, penyedia Bayar Kemudian atau agensi, termasuk AKPK, yang hanya dipautkan sebagai sumber bantuan percuma."],
+      priv:["Kami tidak mengumpul data anda. BolehBeli tiada akaun, tiada pendaftaran dan tiada log masuk bank. Pendapatan, bil dan ansuran yang anda masukkan disimpan hanya dalam pelayar anda pada peranti ini. Ia tidak dihantar kepada kami atau sesiapa pun.","BolehBeli tidak menggunakan analitik, iklan atau kuki penjejakan. Hos laman web mungkin menyimpan log pelayan biasa, seperti alamat IP dan masa lawatan, seperti kebanyakan laman web.","Kami mereka BolehBeli supaya kami tidak mengumpul atau menyimpan data peribadi anda, selaras dengan prinsip Akta Perlindungan Data Peribadi 2010 (PDPA) Malaysia.","Anda yang mengawal. Buang mana-mana ansuran dalam aplikasi, atau kosongkan data laman ini dalam tetapan pelayar untuk memadam semuanya. Ini tidak boleh dibatalkan.","Pautan AKPK membuka laman web lain yang mempunyai amalan privasinya sendiri.","Jika ini berubah, contohnya jika akaun atau analitik ditambah, kami akan kemas kini halaman ini dahulu."],
       tabHome:"Utama", tabPlans:"Ansuran", tabBuy:"Boleh beli?", tabHelp:"Bantuan", tabsAria:"Bahagian utama",
       confirmTitle:"Buang ansuran ini?", confirmBody:"{n} – {x} sebulan akan dibuang daripada pelan anda.", removed:"Dibuang", errMonths:"Bulan mesti antara 1 hingga 60.",
       storageFail:"Tidak dapat simpan pada peranti ini. Nombor anda akan hilang apabila halaman ditutup. Pastikan mod peribadi dimatikan.",
@@ -610,7 +619,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
   };
 
   // Save to phone
-  var SHARE_URL="https://bolehbeli.netlify.app", saveFrom="home";
+  var SHARE_URL="https://bolehbeli.netlify.app", saveFrom="home", legalFrom="welcome";
   function stepList(a){return '<ol class="signs" style="padding-left:22px">'+a.map(function(s){return '<li style="margin-bottom:8px">'+esc(s)+'</li>';}).join("")+'</ol>';}
   V.save=function(){
     return backBtn(T("saveBack"))+'<h2>'+esc(T("saveTitle"))+'</h2>'+
@@ -635,6 +644,16 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       fallback();
     };
   };
+
+  // Disclaimer and privacy
+  V.legal=function(){
+    function list(a){return '<ul class="signs">'+a.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';}
+    return backBtn(T("back"))+'<h2>'+esc(T("legalTitle"))+'</h2>'+
+      '<div class="card"><div class="sec">'+esc(T("discTitle"))+'</div>'+list(T("disc"))+'</div>'+
+      '<div class="card"><div class="sec">'+esc(T("privTitle"))+'</div>'+list(T("priv"))+'</div>'+
+      '<div class="hint">'+esc(T("legalUpdated"))+'</div>';
+  };
+  W.legal=function(){$("backTop").onclick=function(){leave(legalFrom);};};
 
   // Plans by product/service
   V.plans=function(){
@@ -908,7 +927,8 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
         return '<button type="button" data-t="'+t[0]+'"'+(view===t[0]?' aria-current="page"':'')+'><span class="ic" aria-hidden="true">'+t[1]+'</span><span>'+esc(T(t[2]))+'</span></button>';}).join("")+'</div>';
       tb.querySelectorAll("button").forEach(function(b){b.onclick=function(){tabTo(b.getAttribute("data-t"));};});
     }
-    $("foot").textContent=T("disclaimer");
+    $("foot").innerHTML='<div>'+esc(T("disclaimer"))+'</div>'+(view==="legal"?'':'<button class="link" id="legalLink" type="button">'+esc(T("legalLink"))+'</button>');
+    if($("legalLink"))$("legalLink").onclick=function(){legalFrom=view;go("legal");};
   }
 
   $("lEN").onclick=function(){REAL.lang="en";save();render();};
