@@ -11,7 +11,7 @@ No sign-up. No bank login. Numbers stay on the user's own phone (browser storage
 
 Languages: Bahasa Malaysia (default) and English.
 
-Prototype. Guidance only, not financial advice. Personal project, not a CGC product.
+Prototype. Guidance only, not financial advice. A hobby project.
 
 ## Run
 Open `index.html` in any browser. No build step.
