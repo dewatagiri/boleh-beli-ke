@@ -15,3 +15,6 @@ Prototype. Guidance only, not financial advice. Personal project, not a CGC prod
 
 ## Run
 Open `index.html` in any browser. No build step.
+
+## Licence
+MIT. See [LICENSE](LICENSE). You are welcome to read, copy and adapt the code. To suggest a change, open an issue or a pull request.
