@@ -1,4 +1,4 @@
-# BolehBeli
+# CermatKukuh
 
 A free, single-file web app that helps young Malaysians check whether they can afford a buy-now-pay-later (BNPL) purchase before they tap "Buy".
 
