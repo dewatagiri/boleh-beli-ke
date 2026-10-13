@@ -162,6 +162,11 @@ a{color:var(--link);font-weight:700;}
   display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.3);}
 body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
 .toast button{min-height:44px;min-width:44px;border:0;background:transparent;color:inherit;font-size:1rem;font-weight:800;text-decoration:underline;padding:0 12px;}
+.modal-bg{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;
+  padding:18px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));}
+.modal{width:100%;max-width:420px;background:var(--card);color:var(--ink);border-radius:20px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,.35);}
+.modal h2{margin:0 0 8px;}
+.modal button.danger{display:block;width:100%;margin-top:14px;padding:15px;min-height:44px;font-size:1.059rem;font-weight:800;border:0;border-radius:16px;background:#b42323;color:#fff;}
 .hidden{display:none !important;}
 </style>
 </head>
@@ -227,7 +232,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       next:"Next", back:"Back", cancel:"Cancel", homeBtn:"Home",
       needIncome:"Please type your monthly income.",
       tabHome:"Home", tabPlans:"Instalments", tabBuy:"Can I buy?", tabHelp:"Help", tabsAria:"Main sections",
-      undo:"Undo", removed:"Removed", errMonths:"Months must be between 1 and 60.",
+      confirmTitle:"Remove this instalment?", confirmBody:"{n} – {x} a month will be removed from your plan.", removed:"Removed", errMonths:"Months must be between 1 and 60.",
       storageFail:"Could not save on this device. Your numbers will be lost when you close this page. Check that private browsing is off.",
       gaugeAria:"Instalments are {p}% of your income",
       donutHome:"Where your income goes: must-pay {m}, instalments {i}, left for you {l}",
@@ -302,7 +307,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       next:"Seterusnya", back:"Kembali", cancel:"Batal", homeBtn:"Utama",
       needIncome:"Sila taip pendapatan bulanan anda.",
       tabHome:"Utama", tabPlans:"Ansuran", tabBuy:"Boleh beli?", tabHelp:"Bantuan", tabsAria:"Bahagian utama",
-      undo:"Buat asal", removed:"Dibuang", errMonths:"Bulan mesti antara 1 hingga 60.",
+      confirmTitle:"Buang ansuran ini?", confirmBody:"{n} – {x} sebulan akan dibuang daripada pelan anda.", removed:"Dibuang", errMonths:"Bulan mesti antara 1 hingga 60.",
       storageFail:"Tidak dapat simpan pada peranti ini. Nombor anda akan hilang apabila halaman ditutup. Pastikan mod peribadi dimatikan.",
       gaugeAria:"Ansuran ialah {p}% daripada pendapatan",
       donutHome:"Ke mana pendapatan anda pergi: wajib bayar {m}, ansuran {i}, baki untuk anda {l}",
@@ -481,7 +486,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
   }
   function wireDeletes(root){
     root.querySelectorAll("[data-del]").forEach(function(b){
-      b.onclick=function(){removeItem(parseInt(b.getAttribute("data-del"),10));};
+      b.onclick=function(){confirmRemove(parseInt(b.getAttribute("data-del"),10),b);};
     });
   }
 
@@ -830,24 +835,49 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
   });
   writeHist(false);
 
-  // Remove with undo (instead of a timed second tap)
-  var lastRemoved=null, toastT=null;
-  function hideToast(){
-    clearTimeout(toastT);lastRemoved=null;
-    var t=$("toast");if(t){t.classList.add("hidden");t.innerHTML="";}
+  // Remove: ask "are you sure?" first, then delete and refresh the screen
+  var toastT=null, modalPrev=null;
+  function hideToast(){clearTimeout(toastT);var t=$("toast");if(t){t.classList.add("hidden");t.textContent="";}}
+  function showDone(msg){var t=$("toast");t.textContent=msg;t.classList.remove("hidden");clearTimeout(toastT);toastT=setTimeout(hideToast,3500);}
+  function modalKeys(e){
+    if(e.key==="Escape"){e.preventDefault();closeConfirm();return;}
+    if(e.key==="Tab"){
+      e.preventDefault();
+      var no=$("cfNo"),yes=$("cfYes");
+      (document.activeElement===no?yes:no).focus();
+    }
   }
-  function removeItem(idx){
-    var it=S.items.splice(idx,1)[0];if(!it)return;
-    lastRemoved={it:it,idx:idx};
-    save();render();
-    var t=$("toast");
-    t.innerHTML='<span>'+esc(T("removed"))+': '+esc(it.item||catName(it.cat))+'</span><button type="button" id="undoBtn">'+esc(T("undo"))+'</button>';
-    t.classList.remove("hidden");
-    $("undoBtn").onclick=function(){
-      var r=lastRemoved;if(!r)return;
-      S.items.splice(r.idx,0,r.it);save();hideToast();render();
+  function closeConfirm(){
+    var m=$("confirmBg");if(!m)return;
+    m.parentNode.removeChild(m);
+    document.removeEventListener("keydown",modalKeys,true);
+    var w=document.querySelector(".wrap");if(w)w.removeAttribute("aria-hidden");
+    if(modalPrev&&document.body.contains(modalPrev))modalPrev.focus();
+    modalPrev=null;
+  }
+  function confirmRemove(idx,opener){
+    var it=S.items[idx];if(!it)return;
+    closeConfirm();
+    modalPrev=opener||null;
+    var name=it.item||catName(it.cat);
+    var m=document.createElement("div");m.id="confirmBg";m.className="modal-bg";
+    m.innerHTML='<div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="cfT" aria-describedby="cfB">'+
+      '<h2 id="cfT">'+esc(T("confirmTitle"))+'</h2><p id="cfB">'+esc(T("confirmBody",{n:name,x:fmt(num(it.monthly))}))+'</p>'+
+      '<button class="danger" id="cfYes" type="button">'+esc(T("remove"))+'</button>'+
+      '<button class="second" id="cfNo" type="button">'+esc(T("cancel"))+'</button></div>';
+    document.body.appendChild(m);
+    var w=document.querySelector(".wrap");if(w)w.setAttribute("aria-hidden","true");
+    $("cfNo").onclick=closeConfirm;
+    m.onclick=function(e){if(e.target===m)closeConfirm();};
+    $("cfYes").onclick=function(){
+      var i=S.items.indexOf(it);
+      closeConfirm();
+      if(i>-1){S.items.splice(i,1);save();}
+      render();focusTop();
+      showDone(T("removed")+": "+name);
     };
-    clearTimeout(toastT);toastT=setTimeout(hideToast,10000);
+    document.addEventListener("keydown",modalKeys,true);
+    $("cfNo").focus();
   }
 
   function render(){
