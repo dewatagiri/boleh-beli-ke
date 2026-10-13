@@ -6,7 +6,8 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
-<title>Boleh Beli Ke?</title>
+<title>BolehBeli</title>
+<meta name="apple-mobile-web-app-title" content="BolehBeli">
 <style>
 :root{
   color-scheme:light dark;
@@ -66,6 +67,7 @@ body.has-tabs .wrap{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px));
 h1{font-size:1.882rem;line-height:1.12;margin:6px 0 8px;letter-spacing:-.6px;}
 h2{font-size:1.471rem;line-height:1.2;margin:8px 0 10px;letter-spacing:-.3px;}
 p{margin:0 0 12px;}
+.tag{font-size:1.118rem;font-weight:800;color:var(--link);margin:0 0 8px;}
 .lead{font-size:1.118rem;color:var(--muted);}
 .hero{text-align:center;padding:14px 0 6px;}
 .hero .logo{width:76px;height:76px;margin:0 auto 10px;border-radius:24px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.353rem;box-shadow:0 8px 24px rgba(15,61,145,.25);}
@@ -173,7 +175,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="brand"><span class="mk" aria-hidden="true">💳</span>Boleh Beli Ke?</div>
+    <div class="brand"><span class="mk" aria-hidden="true">💳</span>BolehBeli</div>
     <div class="seg" role="group" aria-label="Language / Bahasa">
       <button type="button" id="lEN" lang="en" aria-label="EN – English" aria-pressed="false">EN</button>
       <button type="button" id="lMS" lang="ms" aria-label="BM – Bahasa Malaysia" aria-pressed="false">BM</button>
@@ -231,6 +233,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       yesAdd:"Yes, add them", noNone:"No, none", addAnother:"Add another", done:"Done",
       next:"Next", back:"Back", cancel:"Cancel", homeBtn:"Home",
       needIncome:"Please type your monthly income.",
+      tagline:"Boleh beli ke? Check first.",
       tabHome:"Home", tabPlans:"Instalments", tabBuy:"Can I buy?", tabHelp:"Help", tabsAria:"Main sections",
       confirmTitle:"Remove this instalment?", confirmBody:"{n} – {x} a month will be removed from your plan.", removed:"Removed", errMonths:"Months must be between 1 and 60.",
       storageFail:"Could not save on this device. Your numbers will be lost when you close this page. Check that private browsing is off.",
@@ -250,11 +253,11 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       noInst:"No instalments added yet.",
       nextPay:"Next payments",
       canBuy:"🛒 Can I buy something?",
-      changeMoney:"Change my income and bills", needHelp:"Struggling to pay? Get help", saveBack:"Back", saveLink:"📲 Save to my phone", saveTitle:"Save to your phone", saveIntro:"Keep Boleh Beli Ke? one tap away, like a normal app. It takes 30 seconds.",
+      changeMoney:"Change my income and bills", needHelp:"Struggling to pay? Get help", saveBack:"Back", saveLink:"📲 Save to my phone", saveTitle:"Save to your phone", saveIntro:"Keep BolehBeli one tap away, like a normal app. It takes 30 seconds.",
       copyBtn:"Copy link", copied:"✅ Link copied. You can paste it in WhatsApp or Notes.", copyFail:"Press and hold the link above, then tap Copy.",
-      linkLbl:"Boleh Beli Ke? link",
-      iosTitle:"iPhone (Safari)", iosSteps:["Open the link in Safari. If you are inside LinkedIn or WhatsApp, tap the ••• or compass icon and choose Open in Safari.","Tap the Share button (square with an arrow pointing up).","Scroll down and tap Add to Home Screen.","Tap Add. The Boleh Beli Ke? icon is now on your home screen."],
-      andTitle:"Android (Chrome)", andSteps:["Open the link in Chrome. If you are inside LinkedIn or WhatsApp, tap the ⋮ menu and choose Open in browser.","Tap the ⋮ menu at the top right of Chrome.","Tap Add to Home screen (or Install app).","Tap Add. The Boleh Beli Ke? icon is now on your home screen."],
+      linkLbl:"BolehBeli link",
+      iosTitle:"iPhone (Safari)", iosSteps:["Open the link in Safari. If you are inside LinkedIn or WhatsApp, tap the ••• or compass icon and choose Open in Safari.","Tap the Share button (square with an arrow pointing up).","Scroll down and tap Add to Home Screen.","Tap Add. The BolehBeli icon is now on your home screen."],
+      andTitle:"Android (Chrome)", andSteps:["Open the link in Chrome. If you are inside LinkedIn or WhatsApp, tap the ⋮ menu and choose Open in browser.","Tap the ⋮ menu at the top right of Chrome.","Tap Add to Home screen (or Install app).","Tap Add. The BolehBeli icon is now on your home screen."],
       saveNote:"Your numbers stay on this phone and in this browser. If you clear browser data, they are gone.",
       remove:"Remove", tapAgain:"Tap again to remove",
       monthsLeft:"{n} months left", dueDay:"pay on day {d}",
@@ -306,6 +309,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       yesAdd:"Ya, tambah", noNone:"Tidak, tiada", addAnother:"Tambah lagi", done:"Selesai",
       next:"Seterusnya", back:"Kembali", cancel:"Batal", homeBtn:"Utama",
       needIncome:"Sila taip pendapatan bulanan anda.",
+      tagline:"Boleh beli ke? Semak dulu.",
       tabHome:"Utama", tabPlans:"Ansuran", tabBuy:"Boleh beli?", tabHelp:"Bantuan", tabsAria:"Bahagian utama",
       confirmTitle:"Buang ansuran ini?", confirmBody:"{n} – {x} sebulan akan dibuang daripada pelan anda.", removed:"Dibuang", errMonths:"Bulan mesti antara 1 hingga 60.",
       storageFail:"Tidak dapat simpan pada peranti ini. Nombor anda akan hilang apabila halaman ditutup. Pastikan mod peribadi dimatikan.",
@@ -325,11 +329,11 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
       noInst:"Belum ada ansuran ditambah.",
       nextPay:"Bayaran seterusnya",
       canBuy:"🛒 Bolehkah saya beli sesuatu?",
-      changeMoney:"Ubah pendapatan dan bil saya", needHelp:"Susah nak bayar? Dapatkan bantuan", saveBack:"Kembali", saveLink:"📲 Simpan ke telefon saya", saveTitle:"Simpan ke telefon anda", saveIntro:"Jadikan Boleh Beli Ke? satu ketik sahaja, seperti app biasa. Ambil masa 30 saat.",
+      changeMoney:"Ubah pendapatan dan bil saya", needHelp:"Susah nak bayar? Dapatkan bantuan", saveBack:"Kembali", saveLink:"📲 Simpan ke telefon saya", saveTitle:"Simpan ke telefon anda", saveIntro:"Jadikan BolehBeli satu ketik sahaja, seperti app biasa. Ambil masa 30 saat.",
       copyBtn:"Salin pautan", copied:"✅ Pautan disalin. Boleh tampal di WhatsApp atau Notes.", copyFail:"Tekan dan tahan pautan di atas, kemudian ketik Salin.",
-      linkLbl:"Pautan Boleh Beli Ke?",
-      iosTitle:"iPhone (Safari)", iosSteps:["Buka pautan dalam Safari. Jika anda berada dalam LinkedIn atau WhatsApp, ketik ikon ••• atau kompas dan pilih Open in Safari.","Ketik butang Share (petak dengan anak panah ke atas).","Tatal ke bawah dan ketik Add to Home Screen.","Ketik Add. Ikon Boleh Beli Ke? kini ada di skrin utama anda."],
-      andTitle:"Android (Chrome)", andSteps:["Buka pautan dalam Chrome. Jika anda berada dalam LinkedIn atau WhatsApp, ketik menu ⋮ dan pilih Buka dalam pelayar.","Ketik menu ⋮ di bahagian atas kanan Chrome.","Ketik Add to Home screen (atau Install app).","Ketik Add. Ikon Boleh Beli Ke? kini ada di skrin utama anda."],
+      linkLbl:"Pautan BolehBeli",
+      iosTitle:"iPhone (Safari)", iosSteps:["Buka pautan dalam Safari. Jika anda berada dalam LinkedIn atau WhatsApp, ketik ikon ••• atau kompas dan pilih Open in Safari.","Ketik butang Share (petak dengan anak panah ke atas).","Tatal ke bawah dan ketik Add to Home Screen.","Ketik Add. Ikon BolehBeli kini ada di skrin utama anda."],
+      andTitle:"Android (Chrome)", andSteps:["Buka pautan dalam Chrome. Jika anda berada dalam LinkedIn atau WhatsApp, ketik menu ⋮ dan pilih Buka dalam pelayar.","Ketik menu ⋮ di bahagian atas kanan Chrome.","Ketik Add to Home screen (atau Install app).","Ketik Add. Ikon BolehBeli kini ada di skrin utama anda."],
       saveNote:"Nombor anda kekal dalam telefon dan pelayar ini sahaja. Jika anda padam data pelayar, nombor itu hilang.",
       remove:"Buang", tapAgain:"Tekan lagi untuk buang",
       monthsLeft:"{n} bulan lagi", dueDay:"bayar pada hari {d}",
@@ -497,7 +501,7 @@ body.has-tabs .toast{bottom:calc(66px + env(safe-area-inset-bottom,0px));}
 
   // Welcome
   V.welcome=function(){
-    return '<div class="hero"><div class="logo" aria-hidden="true">💳</div><h1>Boleh Beli Ke?</h1><p class="lead">'+esc(T("welcomeLead"))+'</p></div>'+
+    return '<div class="hero"><div class="logo" aria-hidden="true">💳</div><h1>BolehBeli</h1><p class="tag">'+esc(T("tagline"))+'</p><p class="lead">'+esc(T("welcomeLead"))+'</p></div>'+
       '<div class="how"><div><b aria-hidden="true">💰</b>'+esc(T("how1"))+'</div><div><b aria-hidden="true">📋</b>'+esc(T("how2"))+'</div><div><b aria-hidden="true">✅</b>'+esc(T("how3"))+'</div></div>'+
       (REAL.setupDone?'<button class="primary" id="contBtn" type="button">'+esc(T("continueMine"))+'</button>':'')+
       '<button class="'+(REAL.setupDone?'link':'primary')+'" id="startBtn" type="button">'+esc(T("start"))+'</button>'+
